@@ -1,5 +1,6 @@
 package com.example.maps.misc
 
+import android.content.res.Resources
 import android.graphics.Bitmap
 import android.graphics.Canvas
 import android.graphics.drawable.Drawable
@@ -10,8 +11,8 @@ import com.google.android.gms.maps.model.BitmapDescriptor
 import com.google.android.gms.maps.model.BitmapDescriptorFactory
 
 class Markers {
-//    private fun fromVectorToBitmap(id: Int, color: Int): BitmapDescriptor {
-//        val vectorDrawable: Drawable? = ResourcesCompat.getDrawable(resources,id, null)
+//    fun fromVectorToBitmap(id: Int, color: Int): BitmapDescriptor {
+//        val vectorDrawable: Drawable? = ResourcesCompat.getDrawable(re,id,null)
 //        if (vectorDrawable == null){
 //            Log.d("MapActivity", "Not Found")
 //            return BitmapDescriptorFactory.defaultMarker()

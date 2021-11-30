@@ -22,6 +22,7 @@ import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
 import com.example.maps.databinding.ActivityMapsBinding
 import com.example.maps.misc.CameraAndViewport
+import com.example.maps.misc.Markers
 import com.example.maps.misc.TypeAndStyle
 import com.google.android.gms.maps.model.*
 import kotlinx.coroutines.delay
@@ -33,6 +34,7 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
     private lateinit var binding: ActivityMapsBinding
     private val typeAndStyle by lazy { TypeAndStyle() }
     private val cameraAndViewport by lazy { CameraAndViewport() }
+    private val customMarkers by lazy { Markers() }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -63,7 +65,9 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
         val calabar = LatLng(4.93379,	8.43793)
         val calabarMarker = mMap.addMarker(MarkerOptions()
             .position(calabar)
-            .title("Marker in calabar"))
+            .title("Marker in calabar")
+            .icon(fromVectorToBitmap(R.drawable.ic_android, Color.parseColor("#000099"))))
+
         mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(calabar, 10f))
 //        mMap.moveCamera(CameraUpdateFactory.newCameraPosition(cameraAndViewport.caliBar))
         mMap.uiSettings.apply {
@@ -80,8 +84,27 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
 //
 //        }
 
-    }
 
+
+
+    }
+    private fun fromVectorToBitmap(id: Int, color: Int): BitmapDescriptor {
+        val vectorDrawable: Drawable? = ResourcesCompat.getDrawable(resources,id,null)
+        if (vectorDrawable == null){
+            Log.d("MapActivity", "Not Found")
+            return BitmapDescriptorFactory.defaultMarker()
+        }
+        val bitmap = Bitmap.createBitmap(
+            vectorDrawable.intrinsicWidth,
+            vectorDrawable.intrinsicHeight,
+            Bitmap.Config.ARGB_8888
+        )
+        val canvas = Canvas(bitmap)
+        vectorDrawable.setBounds(0,0,canvas.width, canvas.height)
+        DrawableCompat.setTint(vectorDrawable, color)
+        vectorDrawable.draw(canvas)
+        return BitmapDescriptorFactory.fromBitmap(bitmap)
+    }
 
 
 
