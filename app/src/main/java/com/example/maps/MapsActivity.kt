@@ -22,13 +22,14 @@ import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
 import com.example.maps.databinding.ActivityMapsBinding
 import com.example.maps.misc.CameraAndViewport
+import com.example.maps.misc.CustomAdapterInfo
 import com.example.maps.misc.Markers
 import com.example.maps.misc.TypeAndStyle
 import com.google.android.gms.maps.model.*
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
-class MapsActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.OnMarkerClickListener {
+class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
 
     private lateinit var mMap: GoogleMap
     private lateinit var binding: ActivityMapsBinding
@@ -69,12 +70,7 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.OnMarker
             .title("Marker in calabar")
             .snippet("Some of the propose Locations")
         )
-        val akpbuyoMarker = mMap.addMarker(MarkerOptions()
-            .position(akpbuyo)
-            .title("Marker in akpbuyo")
-            .snippet("Some of the propose Locations")
-            .zIndex(1f)
-        )
+
 
         mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(calabar, 10f))
 //        mMap.moveCamera(CameraUpdateFactory.newCameraPosition(cameraAndViewport.caliBar))
@@ -83,8 +79,8 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.OnMarker
         }
         typeAndStyle.setMapStyle(mMap,this)
 
-        onMapLongCLick()
-        mMap.setOnMarkerClickListener(this)
+
+        mMap.setInfoWindowAdapter(CustomAdapterInfo(this))
 
 
 
@@ -100,17 +96,6 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.OnMarker
 
     }
 
-    fun onMapLongCLick(){
-        mMap.setOnMapLongClickListener {
-            Toast.makeText(this, "${it.latitude}, ${it.longitude}", Toast.LENGTH_LONG).show()
-        }
-    }
-
-    override fun onMarkerClick(marker: Marker): Boolean {
-        mMap.animateCamera(CameraUpdateFactory.zoomTo(15f),2000,null)
-        marker.showInfoWindow()
-        return true
-    }
 
 
 }

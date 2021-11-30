@@ -5,10 +5,13 @@ import android.graphics.Bitmap
 import android.graphics.Canvas
 import android.graphics.drawable.Drawable
 import android.util.Log
+import android.widget.Toast
 import androidx.core.content.res.ResourcesCompat
 import androidx.core.graphics.drawable.DrawableCompat
+import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.model.BitmapDescriptor
 import com.google.android.gms.maps.model.BitmapDescriptorFactory
+import com.google.android.gms.maps.model.Marker
 
 class Markers {
 //    fun fromVectorToBitmap(id: Int, color: Int): BitmapDescriptor {
@@ -28,5 +31,18 @@ class Markers {
 //        vectorDrawable.draw(canvas)
 //        return BitmapDescriptorFactory.fromBitmap(bitmap)
 //    }
+
+//    fun onMapLongCLick(){
+//        mMap.setOnMapLongClickListener {
+//            Toast.makeText(this, "${it.latitude}, ${it.longitude}", Toast.LENGTH_LONG).show()
+//        }
+//    }
+//
+//    override fun onMarkerClick(marker: Marker): Boolean {
+//        mMap.animateCamera(CameraUpdateFactory.zoomTo(15f),2000,null)
+//        marker.showInfoWindow()
+//        return true
+//    }
+
 
 }
