@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
+import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
@@ -19,10 +20,11 @@ import com.example.maps.databinding.ActivityMapsBinding
 import com.example.maps.misc.CameraAndViewport
 import com.example.maps.misc.TypeAndStyle
 import com.google.android.gms.maps.model.MapStyleOptions
+import com.google.android.gms.maps.model.Marker
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
-class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
+class MapsActivity : AppCompatActivity(), OnMapReadyCallback,GoogleMap.OnMarkerDragListener {
 
     private lateinit var mMap: GoogleMap
     private lateinit var binding: ActivityMapsBinding
@@ -56,7 +58,8 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
 
         // Add a marker in Sydney and move the camera
         val calabar = LatLng(4.93379,	8.43793)
-        mMap.addMarker(MarkerOptions().position(calabar).title("Marker in calabar"))
+        val calabarMarker = mMap.addMarker(MarkerOptions().position(calabar).title("Marker in calabar").draggable(true))
+       calabarMarker?.tag = "Restaurant"
         mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(calabar, 10f))
 //        mMap.moveCamera(CameraUpdateFactory.newCameraPosition(cameraAndViewport.caliBar))
         mMap.uiSettings.apply {
@@ -64,22 +67,31 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
         }
         typeAndStyle.setMapStyle(mMap,this)
 
-        onMapLongClick()
+
 
 
 //        lifecycleScope.launch {
 //            delay(4000L)
-//            mMap.animateCamera(CameraUpdateFactory.zoomTo(14f), 2000, null)
+//            calabarMarker?.remove()
 //
 //        }
 
     }
 
-    private fun onMapLongClick(){
-        mMap.setOnMapLongClickListener {
-            Toast.makeText(this, "${it.latitude} ${it.longitude}", Toast.LENGTH_LONG)
-                .show()
-        }
+    override fun onMarkerDrag(marker: Marker) {
+        Log.d("Drag", "Start")
+
+    }
+
+    override fun onMarkerDragEnd(marker: Marker) {
+        Log.d("Drag", "drag")
+        marker.position
+
+    }
+
+    override fun onMarkerDragStart(p0: Marker) {
+        Log.d("Drag", "End")
+
     }
 
 
