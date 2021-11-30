@@ -28,7 +28,7 @@ import com.google.android.gms.maps.model.*
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
-class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
+class MapsActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.OnMarkerClickListener {
 
     private lateinit var mMap: GoogleMap
     private lateinit var binding: ActivityMapsBinding
@@ -63,10 +63,18 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
 
         // Add a marker in Sydney and move the camera
         val calabar = LatLng(4.93379,	8.43793)
+        val akpbuyo = LatLng(4.98823,	8.39793)
         val calabarMarker = mMap.addMarker(MarkerOptions()
             .position(calabar)
             .title("Marker in calabar")
-            .icon(fromVectorToBitmap(R.drawable.ic_android, Color.parseColor("#000099"))))
+            .snippet("Some of the propose Locations")
+        )
+        val akpbuyoMarker = mMap.addMarker(MarkerOptions()
+            .position(akpbuyo)
+            .title("Marker in akpbuyo")
+            .snippet("Some of the propose Locations")
+            .zIndex(1f)
+        )
 
         mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(calabar, 10f))
 //        mMap.moveCamera(CameraUpdateFactory.newCameraPosition(cameraAndViewport.caliBar))
@@ -74,6 +82,9 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
             isZoomControlsEnabled = true
         }
         typeAndStyle.setMapStyle(mMap,this)
+
+        onMapLongCLick()
+        mMap.setOnMarkerClickListener(this)
 
 
 
@@ -88,24 +99,18 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
 
 
     }
-    private fun fromVectorToBitmap(id: Int, color: Int): BitmapDescriptor {
-        val vectorDrawable: Drawable? = ResourcesCompat.getDrawable(resources,id,null)
-        if (vectorDrawable == null){
-            Log.d("MapActivity", "Not Found")
-            return BitmapDescriptorFactory.defaultMarker()
+
+    fun onMapLongCLick(){
+        mMap.setOnMapLongClickListener {
+            Toast.makeText(this, "${it.latitude}, ${it.longitude}", Toast.LENGTH_LONG).show()
         }
-        val bitmap = Bitmap.createBitmap(
-            vectorDrawable.intrinsicWidth,
-            vectorDrawable.intrinsicHeight,
-            Bitmap.Config.ARGB_8888
-        )
-        val canvas = Canvas(bitmap)
-        vectorDrawable.setBounds(0,0,canvas.width, canvas.height)
-        DrawableCompat.setTint(vectorDrawable, color)
-        vectorDrawable.draw(canvas)
-        return BitmapDescriptorFactory.fromBitmap(bitmap)
     }
 
+    override fun onMarkerClick(marker: Marker): Boolean {
+        mMap.animateCamera(CameraUpdateFactory.zoomTo(15f),2000,null)
+        marker.showInfoWindow()
+        return true
+    }
 
 
 }
